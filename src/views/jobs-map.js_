@@ -1,0 +1,45 @@
+﻿import Vue from 'vue';
+import JobsMap from '@/components/job/jobs-map.vue';
+import { KendoDataSourceInstaller } from '@progress/kendo-datasource-vue-wrapper';
+import { KendoGridInstaller } from '@progress/kendo-grid-vue-wrapper';
+import { KendoWindowInstaller } from '@progress/kendo-window-vue-wrapper';
+import { KendoLayoutInstaller } from '@progress/kendo-layout-vue-wrapper';
+import { KendoDropdownsInstaller } from '@progress/kendo-dropdowns-vue-wrapper';
+import { KendoDateinputsInstaller } from '@progress/kendo-dateinputs-vue-wrapper';
+import { KendoInputsInstaller } from '@progress/kendo-inputs-vue-wrapper';
+import VueSelector from '@/components/shared/vue-selector.vue';
+import { ValidationProvider, extend } from 'vee-validate';
+import { required } from 'vee-validate/dist/rules';
+import '@progress/kendo-ui/js/messages/kendo.messages.ru-RU';
+import { Icon }  from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+
+// this part resolve an issue where the markers would not appear
+delete Icon.Default.prototype._getIconUrl;
+
+Icon.Default.mergeOptions({
+  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+  iconUrl: require('leaflet/dist/images/marker-icon.png'),
+  shadowUrl: require('leaflet/dist/images/marker-shadow.png')
+});
+
+extend('required', {
+    ...required,
+    message: 'Поле {_field_} обязательно для заполнения'
+});
+
+Vue.component('validation-provider', ValidationProvider);
+Vue.component('vue-selector',  VueSelector);
+
+Vue.use(KendoDataSourceInstaller);
+Vue.use(KendoGridInstaller);
+Vue.use(KendoWindowInstaller);
+Vue.use(KendoLayoutInstaller);
+Vue.use(KendoDropdownsInstaller);
+Vue.use(KendoDateinputsInstaller);
+Vue.use(KendoInputsInstaller);
+
+const app = new Vue({
+    el: '#root',
+    render: h => h(JobsMap)
+});
